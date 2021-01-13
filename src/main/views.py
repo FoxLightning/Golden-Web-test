@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-def index():
-    pass
+from .models import ItemMenu
+
+
+class Index(ListView):
+    queryset = ItemMenu.objects.all()

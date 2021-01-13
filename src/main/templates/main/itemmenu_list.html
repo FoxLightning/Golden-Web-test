@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Компейнин помпорейшин</title>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/set_null.css' %}">
+</head>
+<body>
+<nav class="navbar">
+	<nav class="menu">
+		<ul class="menu__list">
+			<li>
+				<a href="" class="menu__link">Наша продукция</a>
+				{% if object_list %}
+					<ul class="sub-menu__list">
+						{% for first_level in object_list %}
+							{% if first_level.parent is None %}
+								<li>
+									<a href="" class="sub-menu__link">{{first_level.get_ru_name}}</a>
+									<ul class="sub-sub-menu__list">
+										{% for second_level in object_list %}
+											{% if first_level.id == second_level.parent_id %}
+												<li>
+													<a href="" class="sub-sub-menu__link">{{second_level.get_ru_name}}</a>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</li>
+			<li>
+				<a href="" class="menu__link">Язык</a>
+				<ul class="sub-menu__list">
+					<li>
+						<a href="" class="sub-menu__link">Русский</a>
+						<a href="" class="sub-menu__link">Английский</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</nav>
+</body>
+</html>
