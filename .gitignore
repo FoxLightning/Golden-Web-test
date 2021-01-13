@@ -1,8 +1,7 @@
 env
-DB.session.sql
 passwords.py
 static_content/
 .pytest_cache/
 src/media_content/
 **/__pycache__/
-**/db.sqlite3
+# **/db.sqlite3
