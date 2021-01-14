@@ -8,58 +8,45 @@ from .choices import LENG_CHOICE
 class AutoLeng(RedirectView):
     pass
 
-# def tree_from_query_list(query_list:list):
-#     '''
-#     --prototype--
-#     algorithm complexity: O(n**2)
-#     TODO try use radix sort expected complexity O(n) bad mamory optimisation
-#     TODO or try fast sort O(n*log(n)) and better memory optimisation
-#     TODO maybe list is better option for tree
-#     '''
-#     query_list = query_list[:]
-#     tree = {}
-#     add_id = set()
-#     # first step
-#     for element in query_list:
-#         if element.item_menu_id.parent is None:
-#             tree.add(
-#                     {
-#                     element.item_menu_id: { 
-#                         'name': {
-#                             "ru": 
-#                             "en":
-#                         } 
-#                     }
-#                 }
-#             )
-#     return 
 
-
-def hesh_from_query_list(query_list_list:list):
+def hesh_from_query_list(query_list_list: list):
     hesh = {}
     for element in query_list_list:
+
+        # 1. element data
         item_id = element.item_menu_id_id
-        leng_name = element.item_menu_id.get_leng_name[:]
+        leng_name = element.get_leng_name[:]
         link_data = element.item_menu_id.link_data
+        name = element.name
         parent = element.item_menu_id.parent_id
-    
-        if item_id in hesh:
-            hesh[item_id]['name'][leng_name] = 'asdf'
+
+        # 2 create hesh
+        # 2.1 find place to insert element
+        # 2.1.1 insert only name in existing item
+        if parent in hesh and item_id in hesh[parent]:
+            hesh[parent][item_id]['name'][leng_name] = name
+        # 2.1.2 insert fool element
         else:
-            hesh[parent] = {
-                'name': {
-                    leng_name: element.name,
-                },
+            # 2.1.2.1 create dict of items with same parent if not exist
+            if parent not in hesh:
+                hesh[parent] = {}
+            # 2.1.2.1 insert element data in dict
+            hesh[parent][item_id] = {
                 'link': link_data,
-                'parent': parent
+                'name': {
+                    leng_name: name
+                }
             }
+
     return hesh
 
-# def tree_from_model():
-#     queryset = ItemName.objects.select_related('item_menu_id').all()
-#     queryset = list(queryset)
-#     tree = tree_from_query_list(queryset)
-#     breakpoint()
+
+# def tree_from_hesh(hesh):
+#     current_node = None
+
+#     while True:
+
+
 #     return tree
 
 
@@ -69,5 +56,6 @@ class Index(ListView):
     def get_context_data(self, **kwargs):
         kwargs['lang_name'] = self.kwargs.get('pk', 'ru')
         kwargs['tree'] = hesh_from_query_list(list(ItemName.objects.select_related('item_menu_id').all()))
+        kwargs['len'] = len(kwargs['tree'])
         # breakpoint()
         return super().get_context_data(**kwargs)
