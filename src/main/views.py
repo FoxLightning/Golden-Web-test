@@ -2,20 +2,28 @@ from django.views.generic import ListView, RedirectView
 
 from .models import ItemMenu, ItemName
 
-from .choices import LENG_CHOICE
+from . import choices
+
+from .utils import choice_to_str, choice_to_int
 
 
 class AutoLeng(RedirectView):
     pass
 
 
-def hesh_from_query_list(query_list_list: list):
+def hesh_from_queryset(queryset, leng: str) -> dict:
     hesh = {}
-    for element in query_list_list:
-
+    for element in queryset:
+        # group elements by perents
+        '''
+        target: make fast structured dict from queryset
+        complexity: O(n)
+        '''
         # 1. element data
-        item_id = element.item_menu_id_id
         leng_name = element.get_leng_name[:]
+        if leng_name != leng:
+            continue
+        item_id = element.item_menu_id_id
         link_data = element.item_menu_id.link_data
         name = element.name
         parent = element.item_menu_id.parent_id
@@ -35,27 +43,27 @@ def hesh_from_query_list(query_list_list: list):
                 'link': link_data,
                 'name': {
                     leng_name: name
-                }
+                },
+                'childs': {}
             }
-
     return hesh
 
 
-# def tree_from_hesh(hesh):
-#     current_node = None
-
-#     while True:
-
-
-#     return tree
-
-
 class Index(ListView):
-    queryset = ItemMenu.objects.all()
+    queryset = ItemName.objects.select_related('item_menu_id').all()
 
     def get_context_data(self, **kwargs):
-        kwargs['lang_name'] = self.kwargs.get('pk', 'ru')
-        kwargs['tree'] = hesh_from_query_list(list(ItemName.objects.select_related('item_menu_id').all()))
-        kwargs['len'] = len(kwargs['tree'])
+        # define lenguage
+        leng_name = self.kwargs.get('pk', 'ru')
+        leng_id = choice_to_int(leng_name, choices.LENG_CHOICE)
+        # generate context current lenguage
+        kwargs['lang_name'] = leng_name
+        context_names = [
+            'title', 'menu'
+        ]
+        kwargs['title'] = choice_to_str(leng_id, choices.TITLE)
+        kwargs['menu'] = choice_to_str(leng_id, choices.TITLE)
+        # create hesh
+        kwargs['hesh'] = hesh_from_queryset(self.queryset, leng_name)
         # breakpoint()
         return super().get_context_data(**kwargs)
