@@ -1,9 +1,10 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
-from .views import AutoLeng, Index
+from .views import Index
 
 
 urlpatterns = [
-    path('/',  AutoLeng.as_view(), name='auto-leng'),
-    path('index/<pk>',  Index.as_view(), name='index'),
+    path('',  RedirectView.as_view(url='/ru'), name='auto-leng'),
+    path('<pk>',  Index.as_view(), name='index'),
 ]

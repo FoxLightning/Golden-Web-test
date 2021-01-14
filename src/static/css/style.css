@@ -21,7 +21,7 @@ html, body {
     list-style: none;
 }
 
-/* first level */
+/* Menu level */
 .menu__list {
     display: flex;
     Justify-content: space-between;
@@ -40,7 +40,7 @@ html, body {
     color: #fff;
 }
 
-/* second level */
+/* First level */
 .sub-menu__list {
     min-width: 250px;
     display: none;
@@ -61,7 +61,7 @@ html, body {
     padding: 5px 10px;
 }
 
-/* last level */
+/* Second level */
 .sub-sub-menu__list {
     display: none;
     position: absolute;
