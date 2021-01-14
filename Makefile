@@ -22,3 +22,6 @@ csu:
 
 sp:
 	python3 ./src/manage.py shell_plus --print-sql
+
+fdb:
+	python3 ./src/manage.py fill_db
