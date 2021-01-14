@@ -1,10 +1,19 @@
 from .choices import LENG_CHOICE
 
 
-def leng_name(input_id: int) -> str:
-    leng_name = ''
-    for leng_id, leng_neme_choice in LENG_CHOICE:
-        if leng_id == input_id:
-            leng_name = leng_neme_choice
+def choice_to_str(input_id: int, choices) -> str:
+    string = ''
+    for choice_id, str_choice in choices:
+        if choice_id == input_id:
+            string = str_choice
             break
-    return leng_name
+    return string
+
+
+def choice_to_int(input_str: str, choices) -> int:
+    integer = 0
+    for choice_id, str_choice in choices:
+        if str_choice == input_str:
+            integer = choice_id
+            break
+    return integer

@@ -5,13 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>
-		{% if lang_name == 'ru' %}
-			Основание
-		{% elif lang_name == 'en' %}
-			Foundation
-		{% endif %} 
-	</title>
+	<title>{{ TITLE }}</title>
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
 	<link rel="stylesheet" href="{% static 'css/set_null.css' %}">
 </head>
@@ -20,13 +14,7 @@
 	<nav class="menu">
 		<ul class="menu__list">
 			<li>
-				<a href="" class="menu__link">
-					{% if lang_name == 'ru' %}
-						Наша продукция
-					{% elif lang_name == 'en' %}
-						Our prodaction
-					{% endif %} 
-				</a>
+				<a href="" class="menu__link">{{ MENU }}</a>
 				{% if object_list %}
 					<ul class="sub-menu__list">
 						{% for first_level in object_list %}
@@ -57,28 +45,18 @@
 				{% endif %}
 			</li>
 			<li>
-				<a href="" class="menu__link">
-					{% if lang_name == 'ru' %}
-						Язык
-					{% elif lang_name == 'en' %}
-						Lenguage
-					{% endif %} 
-					({{ lang_name }})</a>
+				<a href="" class="menu__link">{{ LENG_NAMES }} ({{ lang_name }})</a>
 				<ul class="sub-menu__list">
 					<li>
-						{% if lang_name == 'ru' %}
-							<a href="{% url 'index' 'ru' %}" class="sub-menu__link">Русский</a><br>
-							<a href="{% url 'index' 'en' %}" class="sub-menu__link">Английский</a>
-						{% elif lang_name == 'en' %}
-							<a href="{% url 'index' 'ru' %}" class="sub-menu__link">Russian</a><br>
-							<a href="{% url 'index' 'en' %}" class="sub-menu__link">English</a>
-						{% endif %} 
+						{% for leng_id_fl, lang_name_fl in lengs %}
+							<a href="{% url 'index' pk=leng_id_fl %}" class="sub-menu__link">{{ lang_name_fl }}</a><br>
+						{% endfor %}
 					</li>
 				</ul>
 			</li>
 		</ul>
 	</nav>
 </nav>
-{{ tree }}
+{{ hash }}
 </body>
 </html>

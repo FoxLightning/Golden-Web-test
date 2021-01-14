@@ -29,23 +29,10 @@ def hesh_from_queryset(queryset, leng: str) -> dict:
         parent = element.item_menu_id.parent_id
 
         # 2 create hesh
-        # 2.1 find place to insert element
-        # 2.1.1 insert only name in existing item
-        if parent in hesh and item_id in hesh[parent]:
-            hesh[parent][item_id]['name'][leng_name] = name
-        # 2.1.2 insert fool element
-        else:
-            # 2.1.2.1 create dict of items with same parent if not exist
-            if parent not in hesh:
-                hesh[parent] = {}
-            # 2.1.2.1 insert element data in dict
-            hesh[parent][item_id] = {
-                'link': link_data,
-                'name': {
-                    leng_name: name
-                },
-                'childs': {}
-            }
+        if parent not in hesh:
+            hesh[parent] = {}
+
+        hesh[parent][item_id] = (link_data, name)
     return hesh
 
 
@@ -56,14 +43,19 @@ class Index(ListView):
         # define lenguage
         leng_name = self.kwargs.get('pk', 'ru')
         leng_id = choice_to_int(leng_name, choices.LENG_CHOICE)
+
         # generate context current lenguage
         kwargs['lang_name'] = leng_name
-        context_names = [
-            'title', 'menu'
-        ]
-        kwargs['title'] = choice_to_str(leng_id, choices.TITLE)
-        kwargs['menu'] = choice_to_str(leng_id, choices.TITLE)
-        # create hesh
+
+        context_names = ('TITLE', 'MENU', 'LENG_NAMES')
+        for name in context_names:
+            kwargs[name] = choice_to_str(leng_id, getattr(choices, name))
+
+        kwargs['lengs'] = (
+            (choice_to_str(leng_id, choices.LENG_CHOICE), name,)
+            for leng_id, name in choices.LENG_NAMES
+        )
+
         kwargs['hesh'] = hesh_from_queryset(self.queryset, leng_name)
-        # breakpoint()
+
         return super().get_context_data(**kwargs)

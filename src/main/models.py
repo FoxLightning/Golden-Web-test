@@ -1,8 +1,8 @@
 from django.db import models
 
-from .utils import leng_name
+from .utils import choice_to_str
 
-from .choices import LENG_CHOICE
+from . import choices
 
 
 class ItemName(models.Model):
@@ -10,8 +10,13 @@ class ItemName(models.Model):
     This model exist for easy addition of language at any stage
     """
     name = models.CharField(max_length=256)
-    leng = models.PositiveSmallIntegerField(choices=LENG_CHOICE)
+    leng = models.PositiveSmallIntegerField(choices=choices.LENG_CHOICE)
     item_menu_id = models.ForeignKey('main.ItemMenu', on_delete=models.CASCADE)
+
+    @property
+    def get_leng_name(self):
+        return choice_to_str(self.leng, choices.LENG_CHOICE)
+
 
     # def __str__(self):
     #     leng = ''
@@ -34,19 +39,9 @@ class ItemMenu(models.Model):
     )
     link_data = models.CharField(max_length=256, null=True, default=None)
 
-    @property
-    def get_ru_name(self):
-        name = ItemName.objects.filter(item_menu_id=self.id, leng=1).first()
-        return str(name.name)
 
-    @property
-    def get_en_name(self):
-        name = ItemName.objects.filter(item_menu_id=self.id, leng=2).first()
-        return str(name.name)
 
-    @property
-    def get_leng_name(self):
-        return leng_name(self.id)
+
 
     # def __str__(self):
     #     name = ItemName.objects.filter(item_menu_id=self.id, leng=2).first()
