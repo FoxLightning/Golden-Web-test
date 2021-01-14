@@ -6,6 +6,9 @@ SHELL := /bin/bash
 # startapp:
 # 	python3 ./src/manage.py startapp main ./src/main
 
+rs:
+	python3 ./src/manage.py runserver
+
 mm:
 	python3 ./src/manage.py makemigrations
 

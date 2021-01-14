@@ -1,0 +1,48 @@
+{% load custom_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="{{ lang_name }}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ TITLE }}</title>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/set_null.css' %}">
+</head>
+<body>
+<nav class="navbar">
+	<nav class="menu">
+		<ul class="menu__list">
+			<li>
+				<a href="" class="menu__link">{{ MENU }}</a>
+				<ul class="sub-menu__list">
+					{% for lv1 in hesh|get_item:0 %}
+						<li>
+							<a href="{{ lv1.2 }}" class="sub-menu__link">{{lv1.1}}</a>
+							<ul class="sub-sub-menu__list">
+								{% for lv2 in hesh|get_item:lv1.0 %}
+									<li>
+											<a href="{{ lv2.2 }}" class="sub-sub-menu__link">{{lv2.1}}</a>
+									</li>
+								{% endfor %}
+							</ul>
+						</li>
+					{% endfor %}
+				</ul>
+			</li>
+			<li>
+				<a href="" class="menu__link">{{ LENG_NAMES }} ({{ lang_name }})</a>
+				<ul class="sub-menu__list">
+					<li>
+						{% for leng_id_fl, lang_name_fl in lengs %}
+							<a href="{% url 'index' pk=leng_id_fl %}" class="sub-menu__link">{{ lang_name_fl }}</a><br>
+						{% endfor %}
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</nav>
+</body>
+</html>
