@@ -1,10 +1,8 @@
 from django.views.generic import ListView, RedirectView
 
-from .models import ItemMenu, ItemName
-
 from . import choices
-
-from .utils import choice_to_str, choice_to_int
+from .models import ItemName
+from .utils import choice_to_int, choice_to_str
 
 
 class AutoLeng(RedirectView):
@@ -14,12 +12,13 @@ class AutoLeng(RedirectView):
 def hesh_from_queryset(queryset, leng: str) -> dict:
     hesh = {}
     for element in queryset:
-        # group elements by perents
         '''
         target: make fast structured dict from queryset
-        complexity: O(n)
+        method: group element by parent
+        result: create hesh complexity = O(n)
+                create template from hesh complexity = O(n)
         '''
-        # 1. element data
+        # element data
         leng_name = element.get_leng_name[:]
         if leng_name != leng:
             continue
@@ -27,12 +26,13 @@ def hesh_from_queryset(queryset, leng: str) -> dict:
         link_data = element.item_menu_id.link_data
         name = element.name
         parent = element.item_menu_id.parent_id
+        parent = parent if parent else 0
 
-        # 2 create hesh
+        # add item to hesh
         if parent not in hesh:
-            hesh[parent] = {}
+            hesh[parent] = []
+        hesh[parent].append((item_id, name, link_data))
 
-        hesh[parent][item_id] = (link_data, name)
     return hesh
 
 

@@ -1,6 +1,3 @@
-from .choices import LENG_CHOICE
-
-
 def choice_to_str(input_id: int, choices) -> str:
     string = ''
     for choice_id, str_choice in choices:

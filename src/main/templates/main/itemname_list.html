@@ -1,3 +1,4 @@
+{% load custom_tags %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -15,34 +16,20 @@
 		<ul class="menu__list">
 			<li>
 				<a href="" class="menu__link">{{ MENU }}</a>
-				{% if object_list %}
-					<ul class="sub-menu__list">
-						{% for first_level in object_list %}
-							{% if first_level.parent is None %}
-								<li>
-									{% if lang_name == 'ru' %}
-										<a href="{{ first_level.link_data }}" class="sub-menu__link">{{first_level.get_ru_name}}</a>
-									{% elif lang_name == 'en' %}
-										<a href="{{ first_level.link_data }}" class="sub-menu__link">{{first_level.get_en_name}}</a>
-									{% endif %}
-									<ul class="sub-sub-menu__list">
-										{% for second_level in object_list %}
-											{% if first_level.id == second_level.parent_id %}
-												<li>
-													{% if lang_name == 'ru' %}
-														<a href="{{ second_level.link_data }}" class="sub-sub-menu__link">{{second_level.get_ru_name}}</a>
-													{% elif lang_name == 'en' %}
-														<a href="{{ second_level.link_data }}" class="sub-sub-menu__link">{{second_level.get_en_name}}</a>
-													{% endif %}
-												</li>
-											{% endif %}
-										{% endfor %}
-									</ul>
-								</li>
-							{% endif %}
-						{% endfor %}
-					</ul>
-				{% endif %}
+				<ul class="sub-menu__list">
+					{% for lv1 in hesh|get_item:0 %}
+						<li>
+							<a href="{{ lv1.2 }}" class="sub-menu__link">{{lv1.1}}</a>
+							<ul class="sub-sub-menu__list">
+								{% for lv2 in hesh|get_item:lv1.0 %}
+									<li>
+											<a href="{{ lv2.2 }}" class="sub-sub-menu__link">{{lv2.1}}</a>
+									</li>
+								{% endfor %}
+							</ul>
+						</li>
+					{% endfor %}
+				</ul>
 			</li>
 			<li>
 				<a href="" class="menu__link">{{ LENG_NAMES }} ({{ lang_name }})</a>
@@ -57,6 +44,5 @@
 		</ul>
 	</nav>
 </nav>
-{{ hash }}
 </body>
 </html>
