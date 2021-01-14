@@ -6,7 +6,7 @@ from .utils import choice_to_str
 
 class ItemName(models.Model):
     """
-    This model exist for easy addition of language at any stage
+    This model exist for easy addition of language and keep 1 normalize form
     """
     name = models.CharField(max_length=256)
     leng = models.PositiveSmallIntegerField(choices=choices.LENG_CHOICE)
