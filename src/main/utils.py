@@ -20,8 +20,6 @@ def hesh_from_queryset(queryset, leng: str) -> dict:
     '''
     target: make fast structured dict from queryset
     method: group element by parent
-    result: create hesh complexity = O(n)
-            create template from hesh complexity = O(n)
     '''
     hesh = {}
     for element in queryset:
