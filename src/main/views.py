@@ -30,7 +30,7 @@ class Index(ListView):
             for leng_id, name in choices.LENG_NAMES
         )
 
-        kwargs['hesh'] = hesh_from_queryset(self.queryset, leng_name)
-        kwargs['queryset'] = self.queryset.filter(leng=leng_id)
+        queryset = self.queryset.filter(leng=leng_id)
+        kwargs['hesh'] = hesh_from_queryset(queryset, leng_name)
 
         return super().get_context_data(**kwargs)

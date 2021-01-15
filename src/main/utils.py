@@ -24,9 +24,6 @@ def hesh_from_queryset(queryset, leng: str) -> dict:
     hesh = {}
     for element in queryset:
         # element data
-        leng_name = element.get_leng_name[:]
-        if leng_name != leng:
-            continue
         item_id = element.item_menu_id_id
         link_data = element.item_menu_id.link_data
         link_data = link_data if link_data else ''
