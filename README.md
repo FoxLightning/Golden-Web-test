@@ -1,3 +1,5 @@
+To fill db by fake data use: make fdb
+
 # Golden-Web-test
 
 1. Поставити фреймворк джанго.
