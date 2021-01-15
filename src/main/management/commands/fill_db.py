@@ -18,22 +18,22 @@ def depth_analys(item_object, depth=1):
         return depth
 
 
-def item_fill_db(depth, breadth=2, parents=None):
-    if not breadth:
+def item_fill_db(breadth, depth=2, parents=None):
+    if not depth:
         return
     if parents:
-        childs = []
         for parent in parents:
+            childs = []
             for _ in range(breadth):
                 child = ItemMenu.objects.create(parent=parent)
                 childs.append(child)
-            item_fill_db(depth, breadth-1, childs)
+            item_fill_db(breadth=breadth, depth=depth-1, parents=childs)
     else:  # len(parents) == 0
         childs = []
         for _ in range(breadth):
             child = ItemMenu.objects.create()
             childs.append(child)
-            item_fill_db(depth, breadth-1, childs)
+        item_fill_db(breadth=breadth, depth=depth-1, parents=childs)
 
 
 def name_fill_db():
@@ -61,10 +61,14 @@ def name_fill_db():
 class Command(BaseCommand):
     help = 'Generate random books'  # noqa
 
-    # def add_arguments(self, parser):
-    #     parser.add_argument('-d', '--depth', type=int, help='nesting depth')
-    #     parser.add_argument('-b', '--breadth', type=int, help='namber of elements i breadth')
+    def add_arguments(self, parser):
+        parser.add_argument('-d', '--depth', type=int, help='nesting depth')
+        parser.add_argument('-b', '--breadth', type=int, help='namber of elements i breadth')
 
     def handle(self, *args, **kwargs):
-        item_fill_db(10)
+        depth = kwargs.get("depth", 2)
+        depth = 2 if depth is None else depth
+        breadth = kwargs.get("breadth", 5)
+        breadth = 5 if breadth is None else breadth
+        item_fill_db(breadth=breadth, depth=depth)
         name_fill_db()
