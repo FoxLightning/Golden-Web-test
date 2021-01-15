@@ -61,10 +61,12 @@ def name_fill_db():
 class Command(BaseCommand):
     help = 'Generate random books'  # noqa
 
-    # def add_arguments(self, parser):
-    #     parser.add_argument('-d', '--depth', type=int, help='nesting depth')
-    #     parser.add_argument('-b', '--breadth', type=int, help='namber of elements i breadth')
+    def add_arguments(self, parser):
+        parser.add_argument('-d', '--depth', type=int, help='nesting depth')
+        parser.add_argument('-b', '--breadth', type=int, help='namber of elements i breadth')
 
     def handle(self, *args, **kwargs):
-        item_fill_db(10)
+        depth = kwargs.get('depth', 2)
+        breadth = kwargs.get('breadth', 10)
+        item_fill_db(depth=depth, breadth=breadth)
         name_fill_db()
