@@ -6,6 +6,15 @@ SHELL := /bin/bash
 # startapp:
 # 	python3 ./src/manage.py startapp main ./src/main
 
+
+ir:
+	pip install -r requirements.txt
+
+fr: 
+	pip freeze > requirements
+
+ur: ir fr
+
 rs:
 	python3 ./src/manage.py runserver
 

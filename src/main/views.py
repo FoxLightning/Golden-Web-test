@@ -31,5 +31,6 @@ class Index(ListView):
         )
 
         kwargs['hesh'] = hesh_from_queryset(self.queryset, leng_name)
+        kwargs['queryset'] = self.queryset.filter(leng=leng_id)
 
         return super().get_context_data(**kwargs)

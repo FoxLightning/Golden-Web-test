@@ -1,9 +1,0 @@
-Django==2.2.16
-django-debug-toolbar==3.1.1
-django-extensions==3.0.9
-flake8==3.8.3
-flake8-builtins==1.5.3
-flake8-import-order==0.18.1
-flake8-print==3.1.4
-ipython==7.18.1
-ipython-genutils==0.2.0

@@ -1,7 +1,7 @@
 LENG_CHOICE = {
     (1, 'ru'),
     (2, 'en'),
-    (3, 'ua'),
+    (3, 'uk'),
 }
 
 TITLE = {
